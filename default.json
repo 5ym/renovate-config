@@ -15,5 +15,8 @@
     }
   ],
   "automergeType": "pr",
-  "platformAutomerge": true
+  "platformAutomerge": true,
+  "reviewers": [
+    "5ym"
+  ]
 }
