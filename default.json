@@ -14,22 +14,28 @@
       "automerge": true
     },
     {
-      "description": "Majors get their own PR and are never merged automatically. A database major cannot be done by swapping the tag -- PostgreSQL refuses to start on a data directory written by another major, so the data has to be dumped and restored first. Grouping majors with patches (separateMajorMinor: false) once put postgres 17 -> 18 in the same automerged PR as an nginx patch.",
+      "description": "Majors get their own PR and are never merged automatically. A database major cannot be done by swapping the tag -- PostgreSQL refuses to start on a data directory written by another major, so the data has to be dumped and restored first. Grouping majors with patches (separateMajorMinor: false) once put postgres 17 -> 18 in the same automerged PR as an nginx patch. Labelled needs-review so the repository's Claude review workflow can opt these in: reviewing a PR that merges itself is wasted, reviewing one that waits for a human is not.",
       "matchUpdateTypes": [
         "major"
       ],
       "groupName": "major dependencies",
       "groupSlug": "major",
-      "automerge": false
+      "automerge": false,
+      "addLabels": [
+        "needs-review"
+      ]
     },
     {
-      "description": "Helm charts are never merged automatically, whatever the update type. A chart's version says nothing about how much of the deployment changes: erpnext went 8.0.15 -> 8.0.78, a \"patch\", and swapped its cache and queue from Dragonfly to Valkey, silently voiding the memory limits that were set in values (danything/gitops#25). Separating majors does not catch that. They get their own group so that holding them back does not also hold back the all-dependencies PR.",
+      "description": "Helm charts are never merged automatically, whatever the update type. A chart's version says nothing about how much of the deployment changes: erpnext went 8.0.15 -> 8.0.78, a \"patch\", and swapped its cache and queue from Dragonfly to Valkey, silently voiding the memory limits that were set in values (danything/gitops#25). Separating majors does not catch that. They get their own group so that holding them back does not also hold back the all-dependencies PR. Labelled needs-review so the repository's Claude review workflow can opt these in: reviewing a PR that merges itself is wasted, reviewing one that waits for a human is not.",
       "matchDatasources": [
         "helm"
       ],
       "groupName": "helm charts",
       "groupSlug": "helm",
-      "automerge": false
+      "automerge": false,
+      "addLabels": [
+        "needs-review"
+      ]
     }
   ],
   "automergeType": "pr",

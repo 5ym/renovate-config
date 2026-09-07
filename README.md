@@ -15,11 +15,25 @@
 
 ## 設定内容
 
-| まとまり | 自動マージ | 中身 |
-| --- | --- | --- |
-| `all dependencies` | する | メジャー以外の全部。小さくて頻繁で、タグを戻せば済む |
-| `major dependencies` | **しない** | メジャー。とくにデータベースはタグを差し替えるだけでは上がらない(PostgreSQL は別メジャーが書いたデータディレクトリでは起動を拒否する) |
-| `helm charts` | **しない** | Helm の chart。更新の種類を問わない |
+| まとまり | 自動マージ | ラベル | 中身 |
+| --- | --- | --- | --- |
+| `all dependencies` | する | | メジャー以外の全部。小さくて頻繁で、タグを戻せば済む |
+| `major dependencies` | **しない** | `needs-review` | メジャー。とくにデータベースはタグを差し替えるだけでは上がらない(PostgreSQL は別メジャーが書いたデータディレクトリでは起動を拒否する) |
+| `helm charts` | **しない** | `needs-review` | Helm の chart。更新の種類を問わない |
+
+### `needs-review` ラベル
+
+各リポジトリの Claude レビュー(`.github/workflows/claude-code-review.yml`)は既定で bot の PR を
+飛ばす。**自分でマージされる PR をレビューしても誰も読まないから**で、それは正しい。
+一方、人を待つ PR はレビューする価値がある。そこで自動マージしないまとまりにだけ
+このラベルを付けて、workflow 側で
+
+```yaml
+!endsWith(github.event.pull_request.user.login, '[bot]') ||
+contains(github.event.pull_request.labels.*.name, 'needs-review')
+```
+
+と拾えるようにしてある。
 
 ほかに `reviewers: ["5ym"]` で PR のレビュワーを指定します。
 
