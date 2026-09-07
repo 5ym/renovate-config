@@ -3,15 +3,24 @@
   "extends": [
     "config:recommended"
   ],
-  "separateMajorMinor": false,
   "packageRules": [
     {
+      "description": "Everything non-major goes in one PR and merges itself. These are small, frequent and reversible by putting the old tag back.",
       "matchPackageNames": [
         "*"
       ],
       "groupName": "all dependencies",
       "groupSlug": "all",
       "automerge": true
+    },
+    {
+      "description": "Majors get their own PR and are never merged automatically. A database major cannot be done by swapping the tag -- PostgreSQL refuses to start on a data directory written by another major, so the data has to be dumped and restored first. Grouping majors with patches (separateMajorMinor: false) once put postgres 17 -> 18 in the same automerged PR as an nginx patch.",
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "groupName": "major dependencies",
+      "groupSlug": "major",
+      "automerge": false
     }
   ],
   "automergeType": "pr",
